@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stream Test</title>
+</head>
+<body>
+    <button id="testBtn">Test Stream</button>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.textContent = '';
+            
+            const response = await fetch('http://127.0.0.1:8000/dialog', {
+                method: 'POST',
+                headers: {
+                    'Authorization': '1',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    session_id: 1,
+                    question: "你是谁呀"
+                })
+            });
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                
+                const text = decoder.decode(value);
+                output.textContent += text;
+            }
+        });
+    </script>
+</body>
+</html>

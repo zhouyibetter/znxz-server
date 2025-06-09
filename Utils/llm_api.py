@@ -8,9 +8,10 @@ key = b'upe2l6UFonRu7qzhWWRfIeYSHJt25nS11o7arzDFlMs='
 cipher = Fernet(key)
 
 BASE_URL = 'https://api.deepseek.com'
-MODEL = 'deepseek-chat'  # DeepSeek V3
+MODEL_V3 = 'deepseek-chat'  # DeepSeek V3
+MODEL_R1 = 'deepseek-reasoner'  # DeepSeek V3
 
-dpv3_client = OpenAI(
+dp_client = OpenAI(
     base_url=BASE_URL,
     api_key=cipher.decrypt(api_key).decode()
 )
@@ -21,8 +22,8 @@ SYS_ROLE = "你是大学软件工程课程助手"
 
 class LlmApi:
     def znxz(self, msg: str):
-        response = dpv3_client.chat.completions.create(
-            model="deepseek-chat",
+        response = dp_client.chat.completions.create(
+            model=MODEL_R1,
             messages=[
                 {"role": "system", "content": SYS_ROLE},
                 {"role": "user", "content": msg},
@@ -37,7 +38,7 @@ class StreamLlmApi:
     """"DeepSeek-V3 的流式输出API"""
 
     def znxz(self, msg: str):
-        response = dpv3_client.chat.completions.create(
+        response = dp_client.chat.completions.create(
             model="deepseek-chat",
             messages=[
                 {"role": "system", "content": SYS_ROLE},
